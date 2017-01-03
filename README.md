@@ -1,2 +1,2 @@
 # quticon_visualization
-Quticon is a visualization tool for things like quality, time and content.
+Quticon (QUality, TIme, CONtent) is a visualization tool for things like quality, time and content.

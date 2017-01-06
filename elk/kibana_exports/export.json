@@ -1,0 +1,62 @@
+[
+  {
+    "_id": "Pipeline-builds-in-30-days-that-spent-more-than-100-milliseconds-in-the-queue",
+    "_type": "search",
+    "_source": {
+      "title": "Pipeline builds in 30 days that spent more than 100 milliseconds in the queue",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "_score",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"jenkins*\",\"query\":{\"query_string\":{\"query\":\"_type:pipeline AND time_in_queue:>100\",\"analyze_wildcard\":true}},\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "Failed-pipeline-builds-in-30-days",
+    "_type": "search",
+    "_source": {
+      "title": "Failed pipeline builds in 30 days",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "_score",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"jenkins*\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"_type:pipeline AND verdict:\\\"FAILURE\\\"\"}},\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "Ok-pipeline-builds-in-30-days",
+    "_type": "search",
+    "_source": {
+      "title": "Ok pipeline builds in 30 days",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "_score",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"jenkins*\",\"query\":{\"query_string\":{\"query\":\"_type:pipeline AND verdict:\\\"SUCCESS\\\"\",\"analyze_wildcard\":true}},\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  }
+]

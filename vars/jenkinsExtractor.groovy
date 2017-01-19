@@ -14,7 +14,7 @@ def call(def jobNames, def numberOfHoursBack) {
           		echo "Job {jobName} wasn't found. Check your configuration"
 			continue
         	}
-		def builds = job.getBuilds().byTimestamp(System.currentTimeMillis()-numberOfHoursBack*60*60*1000, System.currentTimeMillis())
+		def builds = job.getBuilds().byTimestamp(System.currentTimeMillis()-numberOfHoursBack*60*60*1000, System.currentTimeMillis()).completedOnly()
     		echo "Found ${builds.size()} builds matching time criteria for the job ${jobName}"
 		for (def build: builds) {
 			 def entry = new BuildDataEntry(job_name: jobName, 

@@ -26,6 +26,8 @@ Run pipeline job to get at least few builds to export or use already existing jo
 `188.166.73.120:9200` - in the pipeline configuration above is ip address and port of Elastic Search instance. You can get one for yourself by running docker-compose inside elk directory
 
 ```
+mkdir $HOME/elk-backup
+sudo chwon -R 991:991 $HOME/elk-backup
 cd elk
 docker-compose up -d
 ```

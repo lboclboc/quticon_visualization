@@ -12,6 +12,13 @@ def data = jenkinsExtractor(["pipeline"], 5)
 pushToELK("http://188.166.73.120:9200", "jenkins", data)
 ```
 
+If you have to go through the proxy then update pushToELK call in the following way
+
+```
+def data = jenkinsExtractor(["pipeline"], 5)
+pushToELK("http://188.166.73.120:9200", "jenkins", data, "http", "my.proxy.com", 8080)
+```
+
 Run pipeline job to get at least few builds to export or use already existing job.
 
 ## ELK setup

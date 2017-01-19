@@ -10,7 +10,7 @@ import net.praqma.quticon.BuildDataEntry
 // NonCPS added to avoid java.io.NotSerializableException's
 // Read more here https://github.com/jenkinsci/workflow-cps-plugin#technical-design
 @NonCPS
-def call(def url, def index, def buildDataEntryList) {
+def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, def proxy_host=null, def proxy_port=null) {
   mappings = """{ "mappings" : { "_default_" : { "properties" : { 
                                                                   "verdict" : {"type": "string"},
                                                                   "job_name" : {"type": "string"},
@@ -21,6 +21,9 @@ def call(def url, def index, def buildDataEntryList) {
   }}}}"""
   echo "Posting mappings to ${url}/${index}: ${mappings}"
   def http = new HTTPBuilder(url)
+  if (proxy_host != null) {
+     http.setProxy(proxy_host, proxy_port, proxy_protocol)
+  }
   http.request( PUT, JSON ) { req ->
     body = mappings
     uri.path = "/${index}"

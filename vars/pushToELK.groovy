@@ -1,3 +1,5 @@
+// GrabResolver needed for old versions of Jenkins running Groovy 1.8 http://stackoverflow.com/questions/6335184/groovy-1-8-grab-fails-unless-i-manually-call-grape-resolve
+@GrabResolver(name='http-builder', m2Compatible='true', root='http://repo1.maven.org/maven2/')
 @Grapes(
    @Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7.1')
 )

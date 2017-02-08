@@ -1,5 +1,5 @@
 ---
-maintainer: andrey9kin
+maintainer: andrey9kin, carmosin
 ---
 # Quticon
 Quticon (QUality, TIme, CONtent) is a visualization tool for things like quality, time and content.

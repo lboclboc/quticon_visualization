@@ -30,7 +30,7 @@ Run pipeline job to get at least few builds to export or use already existing jo
 
 ```
 mkdir $HOME/elk-backup
-sudo chwon -R 991:991 $HOME/elk-backup
+sudo chown -R 991:991 $HOME/elk-backup
 cd elk
 docker-compose up -d
 ```

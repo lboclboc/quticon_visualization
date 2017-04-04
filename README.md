@@ -8,10 +8,17 @@ Quticon (QUality, TIme, CONtent) is a visualization tool for things like quality
 
 Configure Groovy Shared library to point to this repo - we have global pipeline steps defined inside directory vars
 
-Then create Pipeline job and add the following flow definition where `["pipeline"]` is list with jobs names. So if you call your job `pipeline` and want to collect data for it then you need to have `["pipeline"]` as argument
+Then create Pipeline job and add the following flow definition where `["pipeline"]` is list with jobs names. So if you call your job `pipeline` and want to collect data for it then you need to have `["pipeline"]` as argument. The second argument is number of hours from now. So configration below will extract information about builds done between now and five hours back for the job with the name pipeline.
 
 ```
 def data = jenkinsExtractor(["pipeline"], 5)
+pushToELK("http://188.166.73.120:9200", "jenkins", data)
+```
+
+To extract data for all jobs leave list in the first argument empty
+
+```
+def data = jenkinsExtractor([], 5)
 pushToELK("http://188.166.73.120:9200", "jenkins", data)
 ```
 

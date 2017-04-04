@@ -7,6 +7,10 @@ import net.praqma.quticon.BuildDataEntry
 @NonCPS
 def call(def jobNames, def numberOfHoursBack) {
 	def buildResults = []
+	if (jobNames==[]) {
+		echo "No job names specified for extraction. Check all jobs"
+		jobNames = Jenkins.instance.getJobNames()
+	}
     	for (def jobName: jobNames) {
 		echo "Looking for the job with the name $jobName"
 		def job = Jenkins.instance.getItem(jobName)

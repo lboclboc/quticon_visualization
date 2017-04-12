@@ -2,7 +2,7 @@ package net.praqma.quticon
 
 import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject
 
-def getJobs(jobName) {
+static def getJobs(jobName) {
 	def result = []
 	def job = Jenkins.instance.getItem(jobName)
 	if (job != null && job instanceof WorkflowMultiBranchProject) {

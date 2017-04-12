@@ -9,7 +9,7 @@ class Utils implements Serializable {
 	def getJobs(jobName) {
 
 		def job = Jenkins.instance.getItem(jobName)
-		steps.echo "Hello!"
+
 		if (job != null && job instanceof WorkflowMultiBranchProject) {
 			steps.echo "${jobName} is a MultiBranchProject, return list of child jobs " + job.getAllJobs()
 			return job.getAllJobs()

@@ -5,7 +5,7 @@ import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject
 static def getJobs(jobName) {
 
 	def job = Jenkins.instance.getItem(jobName)
-	
+	println "Hello!"
 	if (job != null && job instanceof WorkflowMultiBranchProject) {
 		println "${jobName} is a MultiBranchProject, return list of child jobs " + job.getAllJobs()
 		return job.getAllJobs()

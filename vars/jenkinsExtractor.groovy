@@ -1,5 +1,5 @@
 import net.praqma.quticon.BuildDataEntry
-import net.praqma.quticon.Utils.getJobs
+import net.praqma.quticon.Utils
 import org.jenkinsci.plugins.workflow.job.WorkflowRun
 import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject
 // This is dependency to https://github.com/jenkinsci/pipeline-stage-view-plugin
@@ -19,7 +19,7 @@ def call(def jobNames, def numberOfHoursBack) {
 	}
     	for (def jobName: jobNames) {
 		echo "Looking for the job with the name $jobName"
-		def jobs = getJobs(jobName)
+		def jobs = Utils.getJobs(jobName)
 		def builds = []
 		for (def job: jobs) {
 			builds += job.getBuilds().byTimestamp(System.currentTimeMillis()-numberOfHoursBack*60*60*1000, System.currentTimeMillis()).completedOnly()

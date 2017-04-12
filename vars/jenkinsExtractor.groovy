@@ -19,7 +19,7 @@ def call(def jobNames, def numberOfHoursBack) {
 		echo "Looking for the job with the name $jobName"
 		def job = Jenkins.instance.getItem(jobName)
   		if (job == null) {
-          		echo "Job {jobName} wasn't found. Check your configuration"
+          		echo "Job ${jobName} wasn't found. Check your configuration"
 			continue
         	}
 		def builds = job.getBuilds().byTimestamp(System.currentTimeMillis()-numberOfHoursBack*60*60*1000, System.currentTimeMillis()).completedOnly()

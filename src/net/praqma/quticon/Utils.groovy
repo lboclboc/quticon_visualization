@@ -1,3 +1,4 @@
+package net.praqma.quticon
 
 def getJobs(jobName) {
 	def result = []

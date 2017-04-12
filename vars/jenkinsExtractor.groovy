@@ -17,7 +17,7 @@ def call(def jobNames, def numberOfHoursBack) {
 		jobNames = Jenkins.instance.getJobNames()
 	}
 	// Pass in current script so we can use echo inside helper functions
-	def utils = new Utils(steps: this)
+	def utils = new Utils(this)
     	for (def jobName: jobNames) {
 		echo "Looking for the job with the name $jobName"
 		def builds = []

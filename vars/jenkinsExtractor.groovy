@@ -1,4 +1,5 @@
 import net.praqma.quticon.BuildDataEntry
+import net.praqma.quticon.Utils.getJobs
 import org.jenkinsci.plugins.workflow.job.WorkflowRun
 import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject
 // This is dependency to https://github.com/jenkinsci/pipeline-stage-view-plugin
@@ -50,37 +51,4 @@ def call(def jobNames, def numberOfHoursBack) {
         	}
 	}
 	return buildResults
-}
-
-def getJobs(jobName) {
-	echo "Looking for the job with the name $jobName"
-	def result = []
-	def job = Jenkins.instance.getItem(jobName)
-	if (job != null && job instanceof WorkflowMultiBranchProject) {
-		echo "${jobName} is a MultiBranchProject, return list of child jobs " + job.getAllJobs()
-		result = job.getAllJobs()
-	}
-	else if (job != null) {
-		result = [job]
-	} else {
-		echo "Job ${jobName} wasn't found. One possible option that it is a branch jobs of multibranch pipeline that can't be accessed usual way"
-		echo "Check if we are dealing with multibranch pipeline. First check for / in job the name"
-		if (jobName.contains("/")) {
-			possibleMultiBranchParent = jobName.split("/")[0]
-			echo "/ found"
-			echo "Check if ${possibleMultiBranchParent} is a multibranch pipeline"
-			def possibleMultiBranchParentJob = Jenkins.instance.getItem(possibleMultiBranchParent)
-			if (possibleMultiBranchParentJob != null && possibleMultiBranchParentJob instanceof WorkflowMultiBranchProject) {
-				echo "It is a multibranch job. Extracted child job " + jobName.split("/")[1]
-		        	result = [possibleMultiBranchParentJob.getItem(jobName.split("/")[1])]
-			} else {
-				echo "${possibleMultiBranchParentJob} is either null or not multibranch pipeline. Skip ${jobName} and continue"
-				result = []
-			}
-		} else {
-			echo "${jobName} doesn't contain / so we are out of guesses. Check you configuration and make sure that ${jobName} exists. Continue"
-			result = []
-       		}
-	}
-	result
 }

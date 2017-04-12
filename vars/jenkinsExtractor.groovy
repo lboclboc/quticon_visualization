@@ -19,9 +19,8 @@ def call(def jobNames, def numberOfHoursBack) {
 	}
     	for (def jobName: jobNames) {
 		echo "Looking for the job with the name $jobName"
-		def jobs = Utils.getJobs(jobName)
 		def builds = []
-		for (def job: jobs) {
+		for (def job: Utils.getJobs(jobName)) {
 			builds += job.getBuilds().byTimestamp(System.currentTimeMillis()-numberOfHoursBack*60*60*1000, System.currentTimeMillis()).completedOnly()
 		}
     		echo "Found ${builds.size()} builds matching time criteria for the job ${jobName}"

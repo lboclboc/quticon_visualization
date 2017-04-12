@@ -54,13 +54,14 @@ def call(def jobNames, def numberOfHoursBack) {
 
 def getJobs(jobName) {
 	echo "Looking for the job with the name $jobName"
+	def result = []
 	def job = Jenkins.instance.getItem(jobName)
 	if (job != null && job instanceof WorkflowMultiBranchProject) {
 		echo "${jobName} is a MultiBranchProject, return list of child jobs " + job.getAllJobs()
-		return job.getAllJobs()
+		result = job.getAllJobs()
 	}
 	if (job != null) {
-		return [job]
+		result = [job]
 	}
 	echo "Job ${jobName} wasn't found. One possible option that it is a branch jobs of multibranch pipeline that can't be accessed usual way"
 	echo "Check if we are dealing with multibranch pipeline. First check for / in job the name"
@@ -71,13 +72,14 @@ def getJobs(jobName) {
 		def possibleMultiBranchParentJob = Jenkins.instance.getItem(possibleMultiBranchParent)
 		if (possibleMultiBranchParentJob != null && possibleMultiBranchParentJob instanceof WorkflowMultiBranchProject) {
 			echo "It is a multibranch job. Extracted child job " + jobName.split("/")[1]
-		        return [possibleMultiBranchParentJob.getItem(jobName.split("/")[1])]
+		        result = [possibleMultiBranchParentJob.getItem(jobName.split("/")[1])]
 		} else {
 			echo "${possibleMultiBranchParentJob} is either null or not multibranch pipeline. Skip ${jobName} and continue"
-			return []
+			result = []
 		}
 	} else {
 		echo "${jobName} doesn't contain / so we are out of guesses. Check you configuration and make sure that ${jobName} exists. Continue"
-		return []
+		result = []
        	}
+	result
 }

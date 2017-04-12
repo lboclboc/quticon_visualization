@@ -67,3 +67,6 @@ def call(def jobNames, def numberOfHoursBack) {
 	}
 	return buildResults
 }
+
+def getJob() {
+}

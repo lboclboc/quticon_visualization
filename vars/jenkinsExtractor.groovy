@@ -1,7 +1,6 @@
 import net.praqma.quticon.BuildDataEntry
 import net.praqma.quticon.Utils
 import org.jenkinsci.plugins.workflow.job.WorkflowRun
-import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject
 // This is dependency to https://github.com/jenkinsci/pipeline-stage-view-plugin
 // There is no good reason to extract pipeline stages from WorkflowRun on our own
 import com.cloudbees.workflow.rest.external.RunExt
@@ -17,10 +16,12 @@ def call(def jobNames, def numberOfHoursBack) {
 		echo "No job names specified for extraction. Check all jobs"
 		jobNames = Jenkins.instance.getJobNames()
 	}
+	// Pass in current script so we can use echo inside helper functions
+	def utils = new Utils(steps: this)
     	for (def jobName: jobNames) {
 		echo "Looking for the job with the name $jobName"
 		def builds = []
-		for (def job: Utils.getJobs(jobName)) {
+		for (def job: utils.getJobs(jobName)) {
 			builds += job.getBuilds().byTimestamp(System.currentTimeMillis()-numberOfHoursBack*60*60*1000, System.currentTimeMillis()).completedOnly()
 		}
     		echo "Found ${builds.size()} builds matching time criteria for the job ${jobName}"

@@ -6,7 +6,7 @@ class Utils implements Serializable {
 	def steps
  	Utils(steps) {this.steps = steps}
 
-	def getJobs(jobName) {
+	List<hudson.model.Job> getJobs(jobName) {
 
 		def job = Jenkins.instance.getItem(jobName)
 

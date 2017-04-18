@@ -10,6 +10,8 @@ Configure [Groovy Shared library](https://jenkins.io/doc/book/pipeline/shared-li
 
 ![Config example](docs/config.png)
 
+## Job configuration
+
 Then create Pipeline job with name `pipeline` and add the following flow definition
 
 ```
@@ -17,6 +19,7 @@ Then create Pipeline job with name `pipeline` and add the following flow definit
 def data = jenkinsExtractor(["pipeline"], 5)
 pushToELK("http://188.166.73.120:9200", "jenkins", data)
 ```
+
 `jenkinsExtractor` and `pushToELK` are pipeline steps provided by quticon Groovy Shared library that we configured above. You can see their definitions [here](vars). `@Library` is a special command to load steps from quticon library. Read more about it [here](https://jenkins.io/doc/book/pipeline/shared-libraries/#using-libraries)
 The first argument of `jenkinsExtractor` step is list of the job names to extract data from. In our case it is only one job `pipeline` thus `["pipeline"]`. The second argument is a time frame in the format of number of hours from now. So configration above will extract information about builds done between now and five hours back for the job with the name `pipeline`.
 `pushToELK` pipeline step receives the following arguments - Elastic Search URL, index name, list of data entries extracted using `jenkinsExtractor` pipeline step.
@@ -35,6 +38,18 @@ If you have to go through the proxy then update pushToELK call in the following 
 @Library("quticon@0.3.0")
 def data = jenkinsExtractor(["pipeline"], 5)
 pushToELK("http://188.166.73.120:9200", "jenkins", data, "http", "my.proxy.com", 8080)
+```
+
+You can also do dynamic library loading directly in pipeline script, i.e. no global configuration needed
+
+```
+library identifier: 'qutiqon@0.3.0', retriever: modernSCM(
+  [$class: 'GitSCMSource',
+   remote: 'https://github.com/Praqma/quticon_visualization.git',
+   credentialsId: ''])
+
+def data = jenkinsExtractor([], 5)
+pushToELK("http://188.166.73.120:9200", "jenkins", data)
 ```
 
 Example output of data extraction (no push to ELK). Note that we will extract pipeline stages as separate entries as well as the pipeline run itself:

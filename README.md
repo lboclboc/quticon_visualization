@@ -114,11 +114,15 @@ New pipeline stage entry: name load-data/push data, result SUCCESS, number 13, d
 `188.166.73.120:9200` - in the pipeline configuration above is ip address and port of Elastic Search instance. You can get one for yourself by running docker-compose inside elk directory
 
 ```
+# ELK requires vm.max_map_count to be set to at least 262144. Make sure to configure it on your Docker host
+# Read more here https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
+sudo sysctl -w vm.max_map_count=262144
 mkdir $HOME/elk-backup
 sudo chown -R 991:991 $HOME/elk-backup
 cd elk
 docker-compose up -d
 ```
+
 Then open in the browser `docker container ip:5601` and create Jenkins index.
 
 ```

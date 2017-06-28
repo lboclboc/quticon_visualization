@@ -17,7 +17,7 @@ def call(def jobNames, def numberOfHoursBack) {
 	}
     	for (def jobName: jobNames) {
 		echo "Looking for the job with the name $jobName"
-		def job = Jenkins.instance.getItem(jobName)
+		def job = Jenkins.instance.getItemByFullName(jobName)
   		if (job == null) {
           		echo "Job {jobName} wasn't found. Check your configuration"
 			continue

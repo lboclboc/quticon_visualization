@@ -29,7 +29,7 @@ def call(def jobNames, def numberOfHoursBack) {
 			// be extracted in the next step
 			if (build instanceof WorkflowRun) {
 				for (flowNode in RunExt.create(build).getStages()) {
-					def stage_entry = new BuildDataEntry(job_name: "${jobName}/${flowNode.getName()}", 
+					def stage_entry = new BuildDataEntry(job_name: "${jobName}/${flowNode.getName().replaceAll("[^a-zA-Z0-9]", "_")}", 
 			           		   verdict: flowNode.getStatus(),
 			                           build_number: build.number,
 				                   duration: flowNode.getDurationMillis(), 

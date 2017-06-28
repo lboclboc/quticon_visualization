@@ -25,11 +25,13 @@ def call(def jobNames, def numberOfHoursBack) {
 		def builds = job.getBuilds().byTimestamp(System.currentTimeMillis()-numberOfHoursBack*60*60*1000, System.currentTimeMillis()).completedOnly()
     		echo "Found ${builds.size()} builds matching time criteria for the job ${jobName}"
 		for (def build: builds) {
+			// Make sure we remove / from job name since it will be part of URL and might confuse ELK
+			sanitizedJobName = jobName.replaceAll("/", ".")
 			// If this is a pipeline then extract pipeline stages as separate entries in addition to the pipeline run itself that will
 			// be extracted in the next step
 			if (build instanceof WorkflowRun) {
 				for (flowNode in RunExt.create(build).getStages()) {
-					def stage_entry = new BuildDataEntry(job_name: "${jobName}/${flowNode.getName().replaceAll("[^a-zA-Z0-9]", "_")}", 
+					def stage_entry = new BuildDataEntry(job_name: "${sanitizedJobName}.${flowNode.getName().replaceAll("[^a-zA-Z0-9]", "_")}", 
 			           		   verdict: flowNode.getStatus(),
 			                           build_number: build.number,
 				                   duration: flowNode.getDurationMillis(), 
@@ -39,7 +41,7 @@ def call(def jobNames, def numberOfHoursBack) {
             				buildResults.add(stage_entry)
 				}
 			}
-			 def entry = new BuildDataEntry(job_name: jobName, 
+			 def entry = new BuildDataEntry(job_name: sanitizedJobName, 
 			           		   verdict: build.result,
 			                           build_number: build.number,
 				                   duration: build.duration, 

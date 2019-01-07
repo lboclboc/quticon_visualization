@@ -6,6 +6,6 @@ class BuildDataEntry
     String verdict;
     int build_number;
     long duration;
-    String timestamp;
+    long timestamp;
     long time_in_queue;
 }

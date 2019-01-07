@@ -33,25 +33,23 @@ def call(def jobNames, def numberOfHoursBack)
             // be extracted in the next step
             if (build instanceof WorkflowRun) {
                 for (flowNode in RunExt.create(build).getStages()) {
-                    ts = new Date(flowNode.getStartTimeMillis())
                     def stage_entry = new BuildDataEntry(
                                job_name: "${jobName}.${flowNode.getName()}", 
                                verdict: flowNode.getStatus(),
                                build_number: build.number,
                                duration: flowNode.getDurationMillis(), 
-                               timestamp: ts.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC")),
+                               timestamp: flowNode.getStartTimeMillis(),
                                time_in_queue: 0) // Fixme!
                     echo "New pipeline stage entry: name ${stage_entry.job_name}, result ${stage_entry.verdict}, number ${stage_entry.build_number}, duration ${stage_entry.duration}, timestamp ${stage_entry.timestamp}, time in queue ${stage_entry.time_in_queue}"
                     buildResults.add(stage_entry)
                 }
             }
-            ts = new Date(build.getTimeInMillis())
             def entry = new BuildDataEntry(
                                job_name: jobName, 
                                verdict: build.result,
                                build_number: build.number,
                                duration: build.duration, 
-                               timestamp: ts.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC")),
+                               timestamp: build.getTimeInMillis(),
                                time_in_queue: build.getStartTimeInMillis() - build.getTimeInMillis()
             )
             echo "New entry: name ${entry.job_name}, result ${entry.verdict}, number ${entry.build_number}, duration ${entry.duration}, timestamp ${entry.timestamp}, time in queue ${entry.time_in_queue}"

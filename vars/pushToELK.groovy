@@ -38,19 +38,25 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
         println "Request failed with status ${resp.status}"
     }
   }
-  echo "Posting data to ${url}"
-  for (BuildDataEntry entry: buildDataEntryList) {
+
+  // Newer elastic does not support multiple types so only use doc here.
+  def type = "doc"
+
+  for (BuildDataEntry entry: buildDataEntryList)
+  {
+    def ts = new Date(entry.timestamp)
+    def iso_date = ts.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
+
     def data = """{
         "jobname": "${entry.job_name}",
         "verdict": "${entry.verdict}",
         "duration": ${entry.duration},
-        "@timestamp": "${entry.timestamp}",
+        "@timestamp": "${iso_date}",
         "time_in_queue": ${entry.time_in_queue},
         "build_number": ${entry.build_number}
     }"""
-    // Newer elastic does not support multiple types so only use doc here.
-    def type = "doc"
-    def uriPath ="${index}/${type}/"
+    def index_date = ts.format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
+    def uriPath ="${index}-$index_date/${type}/"
     echo "Post ${data} to ${url}/${uriPath}"
     http.post(path:uriPath, body:data, requestContentType:JSON) { resp, json ->
       echo json.toString()

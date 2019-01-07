@@ -45,7 +45,7 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
         "verdict": "${entry.verdict}",
         "duration": ${entry.duration},
         "@timestamp": "${entry.timestamp}",
-        "time_in_queue": ${entry.time_in_queue}
+        "time_in_queue": ${entry.time_in_queue},
         "build_number": ${entry.build_number}
     }"""
     // Newer elastic does not support multiple types so only use doc here.

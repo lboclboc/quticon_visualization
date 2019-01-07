@@ -50,7 +50,7 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
     }"""
     // Newer elastic does not support multiple types so only use doc here.
     def type = "doc"
-    def uriPath ="${index}/${type}"
+    def uriPath ="${index}/${type}/"
     echo "Post ${data} to ${url}/${uriPath}"
     http.post(path:uriPath, body:data, requestContentType:JSON) { resp, json ->
       echo json.toString()

@@ -40,7 +40,7 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
   }
   echo "Posting data to ${url}"
   for (BuildDataEntry entry: buildDataEntryList) {
-    def data = """{"jobname": "${entry.job_name}", "verdict": "${entry.verdict}", "duration": ${entry.duration}, "@timestamp": ${entry.timestamp}, "time_in_queue": ${entry.time_in_queue}}"""
+    def data = """{"jobname": "${entry.job_name}", "verdict": "${entry.verdict}", "duration": ${entry.duration}, "@timestamp": "${entry.timestamp}", "time_in_queue": ${entry.time_in_queue}}"""
     // Newer elastic does not support multiple types so only use doc here.
     def type = "doc"
     def uriPath ="${index}/${type}/${entry.build_number}"

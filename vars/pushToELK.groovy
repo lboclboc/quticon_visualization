@@ -18,7 +18,7 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
                                                                   "job_name" : {"type": "string"},
                                                                   "build_number" : {"type": "integer"},
                                                                   "duration" : {"type": "integer"},
-                                                                  "timestamp" : {"type": "date"},
+                                                                  "@timestamp" : {"type": "date"},
                                                                   "time_in_queue" : {"type": "integer"}
   }}}}"""
   echo "Posting mappings to ${url}/${index}: ${mappings}"

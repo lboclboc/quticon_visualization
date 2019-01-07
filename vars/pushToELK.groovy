@@ -13,7 +13,7 @@ import net.praqma.quticon.BuildDataEntry
 // Read more here https://github.com/jenkinsci/workflow-cps-plugin#technical-design
 @NonCPS
 def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, def proxy_host=null, def proxy_port=null) {
-  mappings = """{ "mappings" : { "_default_" : { "properties" : { 
+  mappings = """{ "mappings" : { "doc" : { "properties" : { 
                                                                   "verdict" : {"type": "string"},
                                                                   "job_name" : {"type": "string"},
                                                                   "build_number" : {"type": "integer"},

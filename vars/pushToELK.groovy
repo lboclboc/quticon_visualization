@@ -45,7 +45,7 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
     def type = "doc"
     def uriPath ="${index}/${type}/${entry.build_number}"
     echo "Post ${data} to ${url}/${uriPath}"
-    http.post(path:uriPath, body:data) { resp, json ->
+    http.post(path:uriPath, body:data, requestContentType:JSON) { resp, json ->
       echo json.toString()
       echo resp.statusLine.toString()
     }

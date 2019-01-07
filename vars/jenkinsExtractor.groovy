@@ -39,7 +39,7 @@ def call(def jobNames, def numberOfHoursBack)
                                verdict: flowNode.getStatus(),
                                build_number: build.number,
                                duration: flowNode.getDurationMillis(), 
-                               timestamp: ts.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
+                               timestamp: ts.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC")),
                                time_in_queue: 0) // Fixme!
                     echo "New pipeline stage entry: name ${stage_entry.job_name}, result ${stage_entry.verdict}, number ${stage_entry.build_number}, duration ${stage_entry.duration}, timestamp ${stage_entry.timestamp}, time in queue ${stage_entry.time_in_queue}"
                     buildResults.add(stage_entry)
@@ -51,7 +51,7 @@ def call(def jobNames, def numberOfHoursBack)
                                verdict: build.result,
                                build_number: build.number,
                                duration: build.duration, 
-                               timestamp: ts.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
+                               timestamp: ts.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC")),
                                time_in_queue: build.getStartTimeInMillis() - build.getTimeInMillis()
             )
             echo "New entry: name ${entry.job_name}, result ${entry.verdict}, number ${entry.build_number}, duration ${entry.duration}, timestamp ${entry.timestamp}, time in queue ${entry.time_in_queue}"

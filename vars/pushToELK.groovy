@@ -56,7 +56,7 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
         "build_number": ${entry.build_number}
     }"""
     def index_date = ts.format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
-    def uriPath ="${index}-$index_date/${type}/"
+    def uriPath ="${index}-$index_date/${type}/${entry.job_name}:${entry.build_number}"
     echo "Post ${data} to ${url}/${uriPath}"
     http.post(path:uriPath, body:data, requestContentType:JSON) { resp, json ->
       echo json.toString()

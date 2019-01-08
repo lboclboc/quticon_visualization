@@ -20,6 +20,7 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
                                                                   "duration" : {"type": "integer"},
                                                                   "@timestamp" : {"type": "date"},
                                                                   "time_in_queue" : {"type": "integer"}
+                                                                  "entry_type" : {"type": "string"}
   }}}}"""
   echo "Posting mappings to ${url}/${index}: ${mappings}"
   def http = new HTTPBuilder(url)
@@ -54,6 +55,7 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
         "@timestamp": "${iso_date}",
         "time_in_queue": ${entry.time_in_queue},
         "build_number": ${entry.build_number}
+        "entry_type": ${entry.entry_type}
     }"""
     def index_date = ts.format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
     def cleanJobName = entry.job_name.replace('/', '%2F')

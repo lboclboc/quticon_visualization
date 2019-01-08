@@ -39,7 +39,8 @@ def call(def jobNames, def numberOfHoursBack)
                                build_number: build.number,
                                duration: flowNode.getDurationMillis(), 
                                timestamp: flowNode.getStartTimeMillis(),
-                               time_in_queue: 0) // Fixme!
+                               time_in_queue: 0, // Fixme!
+                               entry_type: "stage")
                     echo "New pipeline stage entry: name ${stage_entry.job_name}, result ${stage_entry.verdict}, number ${stage_entry.build_number}, duration ${stage_entry.duration}, timestamp ${stage_entry.timestamp}, time in queue ${stage_entry.time_in_queue}"
                     buildResults.add(stage_entry)
                 }
@@ -50,8 +51,8 @@ def call(def jobNames, def numberOfHoursBack)
                                build_number: build.number,
                                duration: build.duration, 
                                timestamp: build.getTimeInMillis(),
-                               time_in_queue: build.getStartTimeInMillis() - build.getTimeInMillis()
-            )
+                               time_in_queue: build.getStartTimeInMillis() - build.getTimeInMillis(),
+                               entry_type: "build")
             echo "New entry: name ${entry.job_name}, result ${entry.verdict}, number ${entry.build_number}, duration ${entry.duration}, timestamp ${entry.timestamp}, time in queue ${entry.time_in_queue}"
             buildResults.add(entry)
         }

@@ -54,8 +54,8 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
         "duration": ${entry.duration},
         "@timestamp": "${iso_date}",
         "time_in_queue": ${entry.time_in_queue},
-        "build_number": ${entry.build_number}
-        "entry_type": ${entry.entry_type}
+        "build_number": ${entry.build_number},
+        "entry_type": "${entry.entry_type}"
     }"""
     def index_date = ts.format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
     def cleanJobName = entry.job_name.replace('/', '%2F')

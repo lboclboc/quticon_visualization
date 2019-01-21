@@ -58,9 +58,7 @@ def call(def url, def index, def buildDataEntryList, def proxy_protocol=null, de
         "entry_type": "${entry.entry_type}"
     }"""
     def index_date = ts.format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
-    def cleanJobName = entry.job_name.replace('/', '%2F')
-    def cleanJobName = entry.job_name.replace(' ', '%20')
-    def cleanJobName = entry.job_name.replace(':', '%3A')
+    def cleanJobName = entry.job_name.replace('/', '%2F').replace(' ', '%20').replace(':', '%3A')
     def uriPath ="${index}-${index_date}/${type}/${cleanJobName}:${entry.build_number}"
     echo "Post ${data} to ${url}/${uriPath}"
     http.post(path:uriPath, body:data, requestContentType:JSON) { resp, json ->

@@ -29,21 +29,16 @@ def create_mapping(http, url, index_name, mapping_cache)
 
     def uri = new URI("$url/${index_name}")
 
-    // Don't waste time talking to ES for mappings already created during this run.
-    if (mapping_cache.containsKey(index_name))
-        return
-    mapping_cache[index_name] = true
 
     //
     // Create mapping if needed.
     //
-    println("Posting mappings to ${url}/${index_name}: ${mappings}")
 
     def createMappings = false
     try
     {
         result = http.get(uri:uri)
-        println("Result: " + result)
+        println("Mappings already defined")
     }
     catch(groovyx.net.http.HttpResponseException e)
     {
@@ -54,6 +49,7 @@ def create_mapping(http, url, index_name, mapping_cache)
 
     if (createMappings)
     {
+        println("Posting mappings to ${url}/${index_name}: ${mappings}")
         result = http.request(uri:uri, PUT, JSON ) { req ->
             body = mappings
             uri.path = "/${index}"
@@ -104,7 +100,10 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
         def cleanJobName = entry.job_name.replace('/', '%2F').replace(' ', '%20')
         def index_name = "${index_base}-${index_date}"
 
-        create_mapping(http, url, index_name, mapping_cache)
+        // Update the mappings for the index (if not already done)
+        if (!mapping_cache.containsKey(index_name))
+            mapping_cache[index_name] = true
+            create_mapping(http, url, index_name, mapping_cache)
 
         uri = new URI("$url/${index_name}/${type}/${cleanJobName}%3A${entry.build_number}")
         println("Post ${data} to ${uri}")

@@ -9,7 +9,7 @@ import com.cloudbees.workflow.rest.external.RunExt
 // NonCPS added to avoid java.io.NotSerializableException's
 // Read more here https://github.com/jenkinsci/workflow-cps-plugin#technical-design
 @NonCPS
-def call(def jobNames, def numberOfHoursBack)
+def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[this.binding.jenkinsProject.name])
 {
     def buildResults = []
 
@@ -19,6 +19,10 @@ def call(def jobNames, def numberOfHoursBack)
     }
 
     for (def jobName: jobNames) {
+        if (excludedJobs.contains(jobName)) {
+            echo "Excluding job ${jobName}..."
+            continue
+        }
         echo "Looking for the job with the name $jobName"
         def job = Jenkins.instance.getItemByFullName(jobName)
         if (job == null) {

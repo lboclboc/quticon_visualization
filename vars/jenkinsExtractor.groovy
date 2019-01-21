@@ -64,3 +64,4 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
 
     return buildResults
 }
+// vim: sw=4 ai et ts=4

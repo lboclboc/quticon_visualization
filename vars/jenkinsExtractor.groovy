@@ -11,8 +11,6 @@ import com.cloudbees.workflow.rest.external.RunExt
 @NonCPS
 def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
 {
-    print("DEBUG: Variables=" + this.binding.getVariables())
-
     def buildResults = []
 
     if (jobNames==[]) {

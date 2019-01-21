@@ -9,8 +9,10 @@ import com.cloudbees.workflow.rest.external.RunExt
 // NonCPS added to avoid java.io.NotSerializableException's
 // Read more here https://github.com/jenkinsci/workflow-cps-plugin#technical-design
 @NonCPS
-def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[this.binding.jenkinsProject.name])
+def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
 {
+    print("DEBUG: Variables=" + this.binding.getVariables().join(','))
+
     def buildResults = []
 
     if (jobNames==[]) {

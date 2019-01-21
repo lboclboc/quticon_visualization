@@ -49,10 +49,9 @@ def create_mapping(http, url, index_name, mapping_cache)
 
     if (createMappings)
     {
-        println("Posting mappings to ${url}/${index_name}: ${mappings}")
-        result = http.request(uri:uri, PUT, JSON ) { req ->
+        println("Putting mappings to ${uri}: ${mappings}")
+        result = http.request(uri, PUT, JSON ) { req ->
             body = mappings
-            uri.path = "/${index}"
              
             response.success = { resp, json ->
                 println "Success! ${resp.status}"

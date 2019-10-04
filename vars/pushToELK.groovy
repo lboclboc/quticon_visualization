@@ -118,9 +118,9 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
         catch (Exception err) {
             println("Failed to post data: ${data}")
             println("Exception: ${err.message}")
-
         }
     }
+    return 0
 }
 
 // vim: sw=4 ai et ts=4

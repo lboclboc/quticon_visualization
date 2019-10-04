@@ -21,7 +21,8 @@ def create_mapping(http, url, index_name, mapping_cache)
                     "duration":      {"type": "integer"},
                     "@timestamp":    {"type": "date"},
                     "time_in_queue": {"type": "integer"},
-                    "entry_type":    {"type": "string"}
+                    "entry_type":    {"type": "string"},
+                    "description":   {"type": "string"}
                 }
             }
         }
@@ -93,7 +94,8 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
             "@timestamp": "${iso_date}",
             "time_in_queue": ${entry.time_in_queue},
             "build_number": ${entry.build_number},
-            "entry_type": "${entry.entry_type}"
+            "entry_type": "${entry.entry_type}",
+            "description": "${entry.description}"
         }"""
         def index_date = ts.format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
         def cleanJobName = entry.job_name.replace('/', '%2F').replace(' ', '%20')

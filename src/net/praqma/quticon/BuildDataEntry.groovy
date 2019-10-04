@@ -9,4 +9,5 @@ class BuildDataEntry
     long timestamp;
     long time_in_queue;
     String entry_type;
+    String description;
 }

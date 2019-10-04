@@ -107,7 +107,7 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
             create_mapping(http, url, index_name, mapping_cache)
 
         uri = new URI("$url/${index_name}/${type}/${cleanJobName}%3A${entry.build_number}")
-        println("Post ${data} to ${uri}")
+        println("Posting to ${uri}")
         http.post(uri:uri, body:data, requestContentType:JSON) { resp, json ->
             println(json.toString())
             println(resp.statusLine.toString())

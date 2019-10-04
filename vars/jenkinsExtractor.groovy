@@ -30,7 +30,7 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
             continue
         }
 
-        def builds = job.getBuilds().byTimestamp(System.currentTimeMillis()-numberOfHoursBack*60*60*1000, System.currentTimeMillis()).completedOnly()
+        def builds = job.getBuilds().byTimestamp(System.currentTimeMillis()-(long)numberOfHoursBack*60L*60L*1000L, System.currentTimeMillis()).completedOnly()
         echo "Found ${builds.size()} builds matching time criteria for the job ${jobName}"
         for (def build: builds) {
             // If this is a pipeline then extract pipeline stages as separate entries in addition to the pipeline run itself that will

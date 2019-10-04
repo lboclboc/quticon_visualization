@@ -108,9 +108,17 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
 
         uri = new URI("$url/${index_name}/${type}/${cleanJobName}%3A${entry.build_number}")
         println("Posting to ${uri}")
-        http.post(uri:uri, body:data, requestContentType:JSON) { resp, json ->
-            println(json.toString())
-            println(resp.statusLine.toString())
+        try
+        {
+            http.post(uri:uri, body:data, requestContentType:JSON) { resp, json ->
+                println(json.toString())
+                println(resp.statusLine.toString())
+            }
+        }
+        catch (Exception err) {
+            println("Failed to post data: ${data}")
+            println("Exception: ${err.message}")
+
         }
     }
 }

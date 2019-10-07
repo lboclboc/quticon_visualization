@@ -87,6 +87,9 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
         def ts = new Date(entry.timestamp)
         def iso_date = ts.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
 
+        if entry.description == null || entry.description == "null":
+            entry.description = ""
+
         def data = """{
             "jobname": "${entry.job_name}",
             "verdict": "${entry.verdict}",

@@ -64,7 +64,8 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
                  "number->${entry.build_number}, " +
                  "duration->${entry.duration}, " +
                  "timestamp->${entry.timestamp}, " +
-                 "time in queue->${entry.time_in_queue}"
+                 "time in queue->${entry.time_in_queue}, " +
+                 "description->${entry.description}"
 
             buildResults.add(entry)
         }

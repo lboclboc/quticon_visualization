@@ -70,6 +70,7 @@ def create_mapping(http, url, index_name, mapping_cache)
 @NonCPS
 def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=null, def proxy_host=null, def proxy_port=null)
 {
+    println("Publishing to elastic search on ${url}...")
     def mapping_cache = [ : ] 
 
     // Setup HTTP communication
@@ -87,8 +88,9 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
         def ts = new Date(entry.timestamp)
         def iso_date = ts.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
 
-        if entry.description == null || entry.description == "null":
+        if (entry.description == null || entry.description == "null") {
             entry.description = ""
+        }
 
         def data = """{
             "jobname": "${entry.job_name}",

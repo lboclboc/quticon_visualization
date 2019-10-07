@@ -6,7 +6,7 @@ import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 import net.praqma.quticon.BuildDataEntry
-
+import groovy.json.StringEscapeUtils
 
 @NonCPS
 def create_mapping(http, url, index_name, mapping_cache)
@@ -90,6 +90,9 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
 
         if (entry.description == null || entry.description == "null") {
             entry.description = ""
+        }
+        else {
+            entry.description = StringEscapeUtils.escapeJava(entry.description)
         }
 
         def data = """{

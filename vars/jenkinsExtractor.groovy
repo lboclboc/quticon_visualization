@@ -54,7 +54,7 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
             change_log_set_list = build.getChangeSets()
             List revisions = [];
             for (List change_log_set: change_log_set_list) {
-                for (ChangeLogSet.Entry entry: change_log_set) {
+                for (def entry: change_log_set) {
                     revisions.add(entry.getCommitId())
                 }
             }

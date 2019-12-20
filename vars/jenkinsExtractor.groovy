@@ -35,6 +35,7 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
         for (def build: builds) {
             // If this is a pipeline then extract pipeline stages as separate entries in addition to the pipeline run itself that will
             // be extracted in the next step
+            def revision = null
             if (build instanceof WorkflowRun) {
                 for (flowNode in RunExt.create(build).getStages()) {
                     def stage_entry = new BuildDataEntry(
@@ -49,6 +50,9 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
                     buildResults.add(stage_entry)
                 }
             }
+            else {
+                revision = build.get_revision();
+            }
             def entry = new BuildDataEntry(
                                job_name: jobName, 
                                verdict: build.result,
@@ -58,7 +62,7 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
                                time_in_queue: build.getStartTimeInMillis() - build.getTimeInMillis(),
                                entry_type: "build",
                                description: build.description,
-                               revision: build.get_revision())
+                               revision: revision)
 
             echo "New entry: name->${entry.job_name}, " +
                  "result->${entry.verdict}, " +

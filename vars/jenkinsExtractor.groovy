@@ -57,7 +57,8 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
                                timestamp: build.getTimeInMillis(),
                                time_in_queue: build.getStartTimeInMillis() - build.getTimeInMillis(),
                                entry_type: "build",
-                               description: build.description)
+                               description: build.description,
+                               revision: build.get_revision())
 
             echo "New entry: name->${entry.job_name}, " +
                  "result->${entry.verdict}, " +
@@ -65,7 +66,8 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
                  "duration->${entry.duration}, " +
                  "timestamp->${entry.timestamp}, " +
                  "time in queue->${entry.time_in_queue}, " +
-                 "description->${entry.description}"
+                 "description->${entry.description}, " +
+                 "revision->${entry.revision}"
 
             buildResults.add(entry)
         }

@@ -53,7 +53,7 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
             // Get commits.
             change_log_set_list = build.getChangeSets()
             List revisions = [];
-            for (List change_log_set: change_log_set_list) {
+            for (def change_log_set: change_log_set_list) {
                 for (def entry: change_log_set) {
                     revisions.add(entry.getCommitId())
                 }

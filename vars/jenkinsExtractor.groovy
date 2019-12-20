@@ -35,7 +35,6 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
         for (def build: builds) {
             // If this is a pipeline then extract pipeline stages as separate entries in addition to the pipeline run itself that will
             // be extracted in the next step
-            def revision = null
             if (build instanceof WorkflowRun) {
                 for (flowNode in RunExt.create(build).getStages()) {
                     def stage_entry = new BuildDataEntry(
@@ -50,9 +49,16 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
                     buildResults.add(stage_entry)
                 }
             }
-            else {
-                revision = build.get_revision();
+
+            // Get commits.
+            change_log_set_list = build.getChangeSets()
+            List revisions = [];
+            for (List change_log_set: change_log_set_list) {
+                for (ChangeLogSet.Entry entry: change_log_set) {
+                    revisions.add(entry.getCommitId())
+                }
             }
+
             def entry = new BuildDataEntry(
                                job_name: jobName, 
                                verdict: build.result,
@@ -62,7 +68,7 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
                                time_in_queue: build.getStartTimeInMillis() - build.getTimeInMillis(),
                                entry_type: "build",
                                description: build.description,
-                               revision: revision)
+                               revisions: revisions)
 
             echo "New entry: name->${entry.job_name}, " +
                  "result->${entry.verdict}, " +
@@ -71,7 +77,7 @@ def call(def jobNames=[], def numberOfHoursBack=24, def excludedJobs=[])
                  "timestamp->${entry.timestamp}, " +
                  "time in queue->${entry.time_in_queue}, " +
                  "description->${entry.description}, " +
-                 "revision->${entry.revision}"
+                 "revisions->${entry.revisions}"
 
             buildResults.add(entry)
         }

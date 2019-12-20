@@ -104,7 +104,7 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
             "time_in_queue": ${entry.time_in_queue},
             "build_number": ${entry.build_number},
             "entry_type": "${entry.entry_type}",
-            "description": "${entry.description},"
+            "description": "${entry.description}",
             "revisions": "${entry.revisions}"
         }"""
         def index_date = ts.format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))

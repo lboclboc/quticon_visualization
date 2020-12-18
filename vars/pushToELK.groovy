@@ -8,71 +8,12 @@ import static groovyx.net.http.Method.*
 import net.praqma.quticon.BuildDataEntry
 import groovy.json.StringEscapeUtils
 
-@NonCPS
-def create_mapping(http, url, index_name, mapping_cache)
-{
-    def mappings = '''{
-        "mappings" : {
-            "doc" : {
-                "properties": { 
-                    "verdict":       {"type": "string"},
-                    "job_name":      {"type": "string"},
-                    "build_number":  {"type": "integer"},
-                    "duration":      {"type": "double"},
-                    "@timestamp":    {"type": "date"},
-                    "time_in_queue": {"type": "integer"},
-                    "entry_type":    {"type": "string"},
-                    "description":   {"type": "string"},
-                    "revisions":     {"type": "string"},
-                }
-            }
-        }
-    }'''
-
-    def uri = new URI("$url/${index_name}")
-
-
-    //
-    // Create mapping if needed.
-    //
-
-    def createMappings = false
-    try
-    {
-        result = http.get(uri:uri)
-        println("Mappings already defined")
-    }
-    catch(groovyx.net.http.HttpResponseException e)
-    {
-        if (e.getResponse().getStatus() == 404) {
-            createMappings = true
-        }
-    }
-
-    if (createMappings)
-    {
-        println("Putting mappings to ${uri}: ${mappings}")
-        result = http.request(uri, PUT, JSON ) { req ->
-            body = mappings
-             
-            response.success = { resp, json ->
-                println "Success! ${resp.status}"
-            }
-
-            response.failure = { resp ->
-                println "Request failed with status ${resp.status}"
-            }
-        }
-    }
-}
-
 // NonCPS added to avoid java.io.NotSerializableException's
 // Read more here https://github.com/jenkinsci/workflow-cps-plugin#technical-design
 @NonCPS
 def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=null, def proxy_host=null, def proxy_port=null)
 {
     println("Publishing to elastic search on ${url}...")
-    def mapping_cache = [ : ] 
 
     // Setup HTTP communication
     def http = new HTTPBuilder()
@@ -110,11 +51,6 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
         def index_date = ts.format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
         def cleanJobName = entry.job_name.replace('/', '%2F').replace(' ', '%20')
         def index_name = "${index_base}-${index_date}"
-
-        // Update the mappings for the index (if not already done)
-        if (!mapping_cache.containsKey(index_name))
-            mapping_cache[index_name] = true
-            create_mapping(http, url, index_name, mapping_cache)
 
         uri = new URI("$url/${index_name}/${type}/${cleanJobName}%3A${entry.build_number}")
         println("Posting to ${uri}")

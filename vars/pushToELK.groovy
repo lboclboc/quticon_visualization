@@ -18,7 +18,7 @@ def create_mapping(http, url, index_name, mapping_cache)
                     "verdict":       {"type": "string"},
                     "job_name":      {"type": "string"},
                     "build_number":  {"type": "integer"},
-                    "duration":      {"type": "integer"},
+                    "duration":      {"type": "double"},
                     "@timestamp":    {"type": "date"},
                     "time_in_queue": {"type": "integer"},
                     "entry_type":    {"type": "string"},

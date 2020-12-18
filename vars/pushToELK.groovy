@@ -52,7 +52,7 @@ def call(def url, def index_base, def buildDataEntryList, def proxy_protocol=nul
         def cleanJobName = entry.job_name.replace('/', '%2F').replace(' ', '%20')
         def index_name = "${index_base}-${index_date}"
 
-        uri = new URI("$url/${index_name}/${type}/${cleanJobName}%3A${entry.build_number}")
+        uri = new URI("$url/${index_name}/_doc")
         println("Posting to ${uri}")
         try
         {
